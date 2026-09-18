@@ -1,3 +1,4 @@
+from config import WELCOME_PHOTO
 import logging
 import re
 from aiogram import Bot, F, Router, types
@@ -174,7 +175,6 @@ def get_cities_inline_kb(prefix: str, add_back: bool = True, lang: str = "ru") -
     return InlineKeyboardMarkup(inline_keyboard=builder)
 
 # ================= REGISTRATION & PROFILE =================
-
 @router.message(CommandStart())
 async def cmd_start(message: Message, state: FSMContext):
     await state.clear()
@@ -198,7 +198,13 @@ async def cmd_start(message: Message, state: FSMContext):
             ]
         ]
     )
-    await message.answer(TEXTS["ru"]["welcome"], reply_markup=kb)
+
+    await message.answer_photo(
+        photo=WELCOME_PHOTO,
+        caption=TEXTS["ru"]["welcome"],
+        reply_markup=kb
+    )
+
     await state.set_state(Registration.lang)
 
 @router.callback_query(Registration.lang, F.data.startswith("set_lang:"))
