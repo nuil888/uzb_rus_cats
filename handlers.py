@@ -174,6 +174,11 @@ def get_cities_inline_kb(prefix: str, add_back: bool = True, lang: str = "ru") -
     return InlineKeyboardMarkup(inline_keyboard=builder)
 
 # ================= REGISTRATION & PROFILE =================
+@router.message(F.photo)
+async def get_photo_id(message: Message):
+    file_id = message.photo[-1].file_id
+    print("PHOTO FILE ID:", file_id)
+    await message.answer(file_id)
 
 @router.message(CommandStart())
 async def cmd_start(message: Message, state: FSMContext):
